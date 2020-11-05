@@ -1,0 +1,8 @@
+.p-loader {
+  position: fixed;
+  top: 40%;
+  left: 42%;
+  z-index: 999;
+  display: none;
+  width: 200px;
+}

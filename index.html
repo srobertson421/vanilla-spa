@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vanilla SPA</title>
+  <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <img class="p-loader" src="/pokemon-loader.svg" />
+
+  <nav class="nav" style="margin-bottom: 30px">
+    <div class="nav-left">
+      <a href="/">Home</a>
+      <div class="tabs">
+        <a href="/about">About</a>
+        <a href="/pokemon/page/1">Pokemon</a>
+        <a href="/converter">Converter</a>
+        <a href="/posts">Posts</a>
+      </div>
+    </div>
+  </nav>
+  <main id="app"></main>
+
+  <template id="home-page">
+    <div class="row">
+      <div class="col">
+        <h1 class="text-center">Home</h1>
+      </div>
+    </div>
+  </template>
+
+  <template id="about-page">
+    <div class="row">
+      <div class="col">
+        <h1 class="text-center">About</h1>
+      </div>
+    </div>
+  </template>
+
+  <template id="posts-page">
+    <div class="row">
+      <div class="col">
+        <h1 class="text-center">Posts</h1>
+      </div>
+    </div>
+    <div class="row">
+      ${ Object.keys(state).map(key => template('post-list-item', {id: key, ...state[key]})).join('\n') }
+    </div>
+  </template>
+
+  <template id="post-list-item">
+    <div class="col-3 text-center">
+      <a class="text-capitalize" href="/post/${state.id}/${state.slug}">${ state.title }</a>
+    </div>
+  </template>
+
+  <template id="post-view">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h1 class="text-center">
+            ${ state.title }
+          </h1>
+        </div>
+      </div>
+      ${ state.fields.map(field => template('field-' + field.type, field)).join('\n') }
+    </div>
+  </template>
+
+  <template id="field-paragraph">
+    <div class="row">
+      <div class="col">
+        <p>${ state.content }</p>
+      </div>
+    </div>
+  </template>
+
+  <template id="pokemon-page">
+    <div class="row">
+      <div class="col text-center">
+        <a href="/pokemon/page/${ state.pageNum - 1 || 1 }"><button>Previous Page</button></a>
+      </div>
+      <div class="col text-center">
+        <p>Page: ${state.pageNum}</p>
+      </div>
+      <div class="col text-center">
+        <a href="/pokemon/page/${ state.pageNum + 1 }"><button>Next Page</button></a>
+      </div>
+    </div>
+    <div class="row">
+      ${ state.results.map(poke => template('pokemon-list-item', poke)).join('\n') }
+    </div>
+    <div class="row">
+      <div class="col text-center">
+        <a href="/pokemon/page/${ state.pageNum - 1 || 1 }"><button>Previous Page</button></a>
+      </div>
+      <div class="col text-center">
+        <p>Page: ${state.pageNum}</p>
+      </div>
+      <div class="col text-center">
+        <a href="/pokemon/page/${ state.pageNum + 1 }"><button>Next Page</button></a>
+      </div>
+    </div>
+  </template>
+
+  <template id="converter-page">
+    <div class="row">
+      <div class="col">
+        <h1 class="text-center">Converter</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <input type="file" id="file-upload" />
+      </div>
+    </div>
+    <script>
+      console.log('In converter');
+    </script>
+  </template>
+
+  <template id="pokemon-list-item">
+    <div class="col-3 text-center">
+      <a class="text-capitalize" href="${ state.url.split('v2')[1] }">${ state.name }</a>
+    </div>
+  </template>
+
+  <template id="pokemon-view">
+    <div class="row">
+      <div class="col">
+        <h1 class="text-capitalize text-center">${ state.name }</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col is-center">
+        <img style="min-width: 250px" src="${ state.sprites.front_default }" />
+      </div>
+    </div>
+  </template>
+
+  <script src="https://unpkg.com/universal-router/universal-router.min.js"></script>
+  <script src="https://unpkg.com/universal-router/universal-router-sync.min.js"></script>
+  <script src="https://unpkg.com/universal-router/universal-router-generate-urls.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
